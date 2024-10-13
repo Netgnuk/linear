@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Form</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* CSS สำหรับกรอบเลื่อน */
+        .base-notes-container {
+            border: 1px solid #ccc; /* ขอบกรอบ */
+            max-height: 150px; /* ความสูงสูงสุด */
+            overflow-y: auto; /* เปิดการเลื่อนในแนวตั้ง */
+            padding: 10px; /* การเว้นระยะภายในกรอบ */
+            margin-top: 5px; /* ระยะห่างจากบน */
+        }
+    </style>
+    <style>
+        /* CSS สำหรับกรอบเลื่อน */
+        .middle-notes-container {
+            border: 1px solid #ccc; /* ขอบกรอบ */
+            max-height: 150px; /* ความสูงสูงสุด */
+            overflow-y: auto; /* เปิดการเลื่อนในแนวตั้ง */
+            padding: 10px; /* การเว้นระยะภายในกรอบ */
+            margin-top: 5px; /* ระยะห่างจากบน */
+        }
+    </style>
+</head>
+
+<body>
+
+    <form class="filter-box" id="filterForm">
+        <h3>ตัวกรองสินค้า</h3>
+
+        <!-- Filter by Gender -->
+        <div class="filter-group">
+            <label for="department">เพศ</label><br>
+            <select id="department" name="department">
+                <option value="">เลือกเพศ</option>
+                <option value="Men">ชาย (Men)</option>
+                <option value="Women">หญิง (Women)</option>
+                <option value="Unisex">ไม่ระบุเพศ (Unisex)</option>
+            </select>
+        </div>
+
+        <!-- Filter by Scents -->
+        <div class="filter-group">
+            <label for="scents">กลิ่น (Scents)</label><br>
+            <select id="scents" name="scents">
+                <option value="">เลือกกลิ่น</option>
+            </select>
+        </div>
+
+        <!-- Filter by Base Note -->
+        <div class="filter-group">
+            <label>Base Note</label>
+            <div class="base-notes-container" id="baseNotesContainer"></div> <!-- Container for checkboxes -->
+        </div>
+
+        <script>
+            // Fetch base notes from JSON file
+            fetch('base_notes.json')
+                .then(response => response.json())
+                .then(data => {
+                    const baseNotesContainer = document.getElementById('baseNotesContainer');
+                    data.forEach(item => {
+                        const checkbox = document.createElement('div'); // Create a new div for each checkbox
+                        checkbox.innerHTML = `
+                            <label for="${item.base_notes.toLowerCase()}">
+                                <input type="checkbox" name="base_notes" value="${item.base_notes.toLowerCase()}"> 
+                                ${item.base_notes}
+                            </label>
+                        `;
+                        baseNotesContainer.appendChild(checkbox); // Add the checkbox to the container
+                    });
+                })
+                .catch(error => console.error('ข้อผิดพลาดในการโหลดโน้ตฐาน:', error));
+        </script>
+
+        <!-- Filter by Middle Note -->
+        <div class="filter-group">
+            <label>Middle Note</label>
+            <div class="middle-notes-container" id="middleNotesContainer"></div> <!-- Container for checkboxes -->
+        </div>
+
+        <script>
+            // Fetch base notes from JSON file
+            fetch('middle_notes.json')
+                .then(response => response.json())
+                .then(data => {
+                    const middleNotesContainer = document.getElementById('middleNotesContainer');
+                    data.forEach(item => {
+                        const checkbox = document.createElement('div'); // Create a new div for each checkbox
+                        checkbox.innerHTML = `
+                            <label for="${item.middle_notes.toLowerCase()}">
+                                <input type="checkbox" name="middle_notes" value="${item.middle_notes.toLowerCase()}"> 
+                                ${item.middle_notes}
+                            </label>
+                        `;
+                        middleNotesContainer.appendChild(checkbox); // Add the checkbox to the container
+                    });
+                })
+                .catch(error => console.error('ข้อผิดพลาดในการโหลดโน้ตฐาน:', error));
+        </script>
+
+
+        <!-- Filter by Rating -->
+        <div class="filter-group">
+            <label>คะแนนผลิตภัณฑ์</label>
+            <input type="radio" name="rating" value="4_up"> ★★★★ ขึ้นไป<br>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit">ค้นหา</button>
+
+        <script>
+            // Fetch scents from JSON file
+            fetch('scents.json')
+                .then(response => response.json())
+                .then(data => {
+                    const scentsSelect = document.getElementById('scents');
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.scents.toLowerCase(); // Set the value to lowercase
+                        option.textContent = item.scents; // Display the scent
+                        scentsSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('ข้อผิดพลาดในการโหลดกลิ่น:', error));
+
+            document.getElementById('filterForm').addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent default form submission
+
+                const formData = new FormData(this); // Store form data
+
+                // Convert FormData to an object
+                const data = {};
+                formData.forEach((value, key) => {
+                    if (data[key]) {
+                        data[key] = [].concat(data[key], value); // Combine values for checkboxes
+                    } else {
+                        data[key] = value;
+                    }
+                });
+
+                // Ensure base_notes is an array
+                if (data.base_notes) {
+                    if (!Array.isArray(data.base_notes)) {
+                        data.base_notes = [data.base_notes];
+                    }
+                } else {
+                    data.base_notes = []; // Ensure it's an empty array if nothing is selected
+                }
+
+                if (data.middle_notes) {
+                    if (!Array.isArray(data.middle_notes)) {
+                        data.middle_notes = [data.middle_notes];
+                    }
+                } else {
+                    data.middle_notes = []; // Ensure it's an empty array if nothing is selected
+                }
+
+                console.log('ข้อมูลที่ถูกส่ง:', data); // Log the data
+
+                fetch("http://127.0.0.1:8000/similar-perfumes", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('สำเร็จ:', data); // Show data received from server
+                    })
+                    .catch((error) => {
+                        console.error('ข้อผิดพลาด:', error); // Handle errors
+                    });
+            });
+        </script>
+    </form>
+
+</body>
+
+</html>
