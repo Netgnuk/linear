@@ -185,6 +185,7 @@
                         } else {
                             data[key] = value;
                         }
+
                     });
 
                     // Ensure base_notes is an array
@@ -220,11 +221,38 @@
                             return response.json();
                         })
                         .then(data => {
-                            console.log('สำเร็จ:', data); // Show data received from server
+                            console.log('สำเร็จ:', data); // Log the received data
+
+                            // Check if data is an object
+                            if (typeof data !== 'object' || data === null) {
+                                console.error('ข้อมูลที่ได้รับไม่ถูกต้อง:', data);
+                                return;
+                            }
+
+                            // Convert the object to query parameters
+                            const params = new URLSearchParams();
+
+                            for (const [key, value] of Object.entries(data)) {
+                                // If value is an array, append each value
+                                if (Array.isArray(value)) {
+                                    value.forEach(val => params.append(key, val));
+                                } else {
+                                    params.append(key, value);
+                                }
+                            }
+                            localStorage.setItem('formData', JSON.stringify(data));
+        
+
+                            window.location.href = `result_page.html?${params.toString()}`; // Redirect to the new page
                         })
+
                         .catch((error) => {
                             console.error('ข้อผิดพลาด:', error); // Handle errors
                         });
+                    // สร้าง URL query string
+
+
+
                 }
             });
         </script>

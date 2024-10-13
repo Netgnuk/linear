@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ผลการค้นหา</title>
+</head>
+<body>
+    <h1>ผลการค้นหา</h1>
+    <script>
+        const data = JSON.parse(localStorage.getItem('formData'));
+        console.log(data); // แสดงข้อมูลที่ได้รับ
+
+        // แสดงข้อมูลบนหน้า
+        if (data) {
+            document.body.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        } else {
+            document.body.innerHTML += `<p>ไม่มีข้อมูล</p>`;
+        }
+    </script>
+</body>
+</html>
