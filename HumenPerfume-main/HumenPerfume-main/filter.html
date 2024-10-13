@@ -10,21 +10,31 @@
     <style>
         /* CSS สำหรับกรอบเลื่อน */
         .base-notes-container {
-            border: 1px solid #ccc; /* ขอบกรอบ */
-            max-height: 150px; /* ความสูงสูงสุด */
-            overflow-y: auto; /* เปิดการเลื่อนในแนวตั้ง */
-            padding: 10px; /* การเว้นระยะภายในกรอบ */
-            margin-top: 5px; /* ระยะห่างจากบน */
+            border: 1px solid #ccc;
+            /* ขอบกรอบ */
+            max-height: 150px;
+            /* ความสูงสูงสุด */
+            overflow-y: auto;
+            /* เปิดการเลื่อนในแนวตั้ง */
+            padding: 10px;
+            /* การเว้นระยะภายในกรอบ */
+            margin-top: 5px;
+            /* ระยะห่างจากบน */
         }
     </style>
     <style>
         /* CSS สำหรับกรอบเลื่อน */
         .middle-notes-container {
-            border: 1px solid #ccc; /* ขอบกรอบ */
-            max-height: 150px; /* ความสูงสูงสุด */
-            overflow-y: auto; /* เปิดการเลื่อนในแนวตั้ง */
-            padding: 10px; /* การเว้นระยะภายในกรอบ */
-            margin-top: 5px; /* ระยะห่างจากบน */
+            border: 1px solid #ccc;
+            /* ขอบกรอบ */
+            max-height: 150px;
+            /* ความสูงสูงสุด */
+            overflow-y: auto;
+            /* เปิดการเลื่อนในแนวตั้ง */
+            padding: 10px;
+            /* การเว้นระยะภายในกรอบ */
+            margin-top: 5px;
+            /* ระยะห่างจากบน */
         }
     </style>
 </head>
@@ -55,7 +65,7 @@
 
         <!-- Filter by Base Note -->
         <div class="filter-group">
-            <label>Base Note</label>
+            <label>Base Note (เลือกได้หลายตัวเลือก)</label>
             <div class="base-notes-container" id="baseNotesContainer"></div> <!-- Container for checkboxes -->
         </div>
 
@@ -81,7 +91,7 @@
 
         <!-- Filter by Middle Note -->
         <div class="filter-group">
-            <label>Middle Note</label>
+            <label>Middle Note (เลือกได้หลายตัวเลือก)</label>
             <div class="middle-notes-container" id="middleNotesContainer"></div> <!-- Container for checkboxes -->
         </div>
 
@@ -130,61 +140,95 @@
                 })
                 .catch(error => console.error('ข้อผิดพลาดในการโหลดกลิ่น:', error));
 
+
+            // Validate form inputs
+            function validateForm() {
+                const department = document.getElementById('department').value;
+                const scents = document.getElementById('scents').value;
+                const baseNotes = document.querySelectorAll('input[name="base_notes"]:checked');
+                const middleNotes = document.querySelectorAll('input[name="middle_notes"]:checked');
+
+                if (!department) {
+                    alert('กรุณาเลือกเพศ'); // Please select gender
+                    return false;
+                }
+
+                if (!scents) {
+                    alert('กรุณาเลือกกลิ่น (scents)'); // Please select scent
+                    return false;
+                }
+
+                if (baseNotes.length === 0) {
+                    alert('กรุณาเลือก base_notes'); // Please select base notes
+                    return false;
+                }
+
+                if (middleNotes.length === 0) {
+                    alert('กรุณาเลือก middle_notes'); // Please select middle notes
+                    return false;
+                }
+
+                return true; // All validations passed
+            }
+
             document.getElementById('filterForm').addEventListener('submit', function (event) {
                 event.preventDefault(); // Prevent default form submission
 
-                const formData = new FormData(this); // Store form data
+                if (validateForm()) { // Only submit if validation is successful
+                    const formData = new FormData(this); // Store form data
 
-                // Convert FormData to an object
-                const data = {};
-                formData.forEach((value, key) => {
-                    if (data[key]) {
-                        data[key] = [].concat(data[key], value); // Combine values for checkboxes
-                    } else {
-                        data[key] = value;
-                    }
-                });
-
-                // Ensure base_notes is an array
-                if (data.base_notes) {
-                    if (!Array.isArray(data.base_notes)) {
-                        data.base_notes = [data.base_notes];
-                    }
-                } else {
-                    data.base_notes = []; // Ensure it's an empty array if nothing is selected
-                }
-
-                if (data.middle_notes) {
-                    if (!Array.isArray(data.middle_notes)) {
-                        data.middle_notes = [data.middle_notes];
-                    }
-                } else {
-                    data.middle_notes = []; // Ensure it's an empty array if nothing is selected
-                }
-
-                console.log('ข้อมูลที่ถูกส่ง:', data); // Log the data
-
-                fetch("http://127.0.0.1:8000/similar-perfumes", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง: ' + response.statusText);
+                    // Convert FormData to an object
+                    const data = {};
+                    formData.forEach((value, key) => {
+                        if (data[key]) {
+                            data[key] = [].concat(data[key], value); // Combine values for checkboxes
+                        } else {
+                            data[key] = value;
                         }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('สำเร็จ:', data); // Show data received from server
-                    })
-                    .catch((error) => {
-                        console.error('ข้อผิดพลาด:', error); // Handle errors
                     });
+
+                    // Ensure base_notes is an array
+                    if (data.base_notes) {
+                        if (!Array.isArray(data.base_notes)) {
+                            data.base_notes = [data.base_notes];
+                        }
+                    } else {
+                        data.base_notes = []; // Ensure it's an empty array if nothing is selected
+                    }
+
+                    if (data.middle_notes) {
+                        if (!Array.isArray(data.middle_notes)) {
+                            data.middle_notes = [data.middle_notes];
+                        }
+                    } else {
+                        data.middle_notes = []; // Ensure it's an empty array if nothing is selected
+                    }
+
+                    console.log('ข้อมูลที่ถูกส่ง:', data); // Log the data
+
+                    fetch("http://127.0.0.1:8000/similar-perfumes", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('การตอบสนองของเครือข่ายไม่ถูกต้อง: ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('สำเร็จ:', data); // Show data received from server
+                        })
+                        .catch((error) => {
+                            console.error('ข้อผิดพลาด:', error); // Handle errors
+                        });
+                }
             });
         </script>
+
     </form>
 
 </body>
