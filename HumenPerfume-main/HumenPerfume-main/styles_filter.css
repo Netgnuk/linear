@@ -1,0 +1,124 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    /* height: 100vh; */
+    display: flex;
+    justify-content: center;
+    
+    background-image: url('perfume3.webp');
+    background-size: cover;
+    background-position: center;
+}
+
+.filter-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    width: 400px;
+    
+    transition: transform 0.3s;
+}
+
+.filter-box:hover {
+    transform: scale(1.02);
+}
+
+.filter-box h3 {
+    color: #8e44ad;
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.filter-group select,
+.filter-group input[type="range"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s;
+}
+
+.filter-group select:focus,
+.filter-group input[type="range"]:focus {
+    border-color: #8e44ad;
+    outline: none;
+}
+
+/* input[type="range"]{
+    
+    background-color: #44ad7a;
+} */
+.slider-container  {
+    
+    margin-bottom:20px ;}
+
+.slider-container label {
+
+    text-align: center;
+}
+.slider-container label.minPrice {
+    font-weight: bold;
+}
+.slider-container label.maxPrice {
+    font-weight: bold;
+}
+.slider-container label.number {
+    font-weight: bold;
+}
+
+
+.value {
+    font-weight: bold;
+    color: #555;
+}
+
+button[type="submit"] {
+    background-color: #8e44ad;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background-color: #732d91;
+}
+
+.base-notes-container,
+.middle-notes-container {
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.base-notes-container div,
+.middle-notes-container div {
+    margin-bottom: 5px;
+}
+
+.base-notes-container input,
+.middle-notes-container input {
+    margin-right: 8px;
+}

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ผลการค้นหา</title>
+    <link rel="stylesheet" href="styles_result.css"> <!-- เชื่อมต่อไฟล์ CSS -->
 </head>
 <body>
     <h1>ผลการค้นหา</h1>
@@ -12,10 +13,20 @@
         console.log(data); // แสดงข้อมูลที่ได้รับ
 
         // แสดงข้อมูลบนหน้า
-        if (data) {
-            document.body.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+        if (data && data.length > 0) {
+            data.forEach(item => {
+                document.body.innerHTML += `
+                    <div class="product">
+                        <h2>${item.name}</h2>
+                        <p><strong>แบรนด์:</strong> ${item.brand}</p>
+                        <p><strong>ประเภท:</strong> ${item.department}</p>
+                        <p><strong>ราคา (THB):</strong> ${item.price_THB}</p>
+                        <p><strong>ความคล้ายคลึง:</strong> ${item.cosine_similarity.toFixed(2)}</p>
+                    </div>
+                `;
+            });
         } else {
-            document.body.innerHTML += `<p>ไม่มีข้อมูล</p>`;
+            document.body.innerHTML += `<p class="no-results">ไม่มีข้อมูลที่ตรงกับการค้นหา</p>`;
         }
     </script>
 </body>

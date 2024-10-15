@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="th">
 
@@ -5,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Filter Form</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles_filter.css">
 
     <style>
         /* CSS สำหรับกรอบเลื่อน */
@@ -46,12 +47,13 @@
 
         <!-- Filter by Gender -->
         <div class="filter-group">
-            <label for="department">เพศ</label><br>
-            <select id="department" name="department">
+            <label for="typ">เพศ</label><br>
+            <select id="typ" name="typ">
                 <option value="">เลือกเพศ</option>
                 <option value="Men">ชาย (Men)</option>
                 <option value="Women">หญิง (Women)</option>
-                <option value="Unisex">ไม่ระบุเพศ (Unisex)</option>
+                <option value="Unisex">Unisex</option>
+                <option value="All">All</option>
             </select>
         </div>
 
@@ -66,6 +68,7 @@
         <!-- Filter by Base Note -->
         <div class="filter-group">
             <label>Base Note (เลือกได้หลายตัวเลือก)</label>
+            
             <div class="base-notes-container" id="baseNotesContainer"></div> <!-- Container for checkboxes -->
         </div>
 
@@ -78,9 +81,9 @@
                     data.forEach(item => {
                         const checkbox = document.createElement('div'); // Create a new div for each checkbox
                         checkbox.innerHTML = `
-                            <label for="${item.base_notes.toLowerCase()}">
-                                <input type="checkbox" name="base_notes" value="${item.base_notes.toLowerCase()}"> 
-                                ${item.base_notes}
+                            <label for="${item.base.toLowerCase()}">
+                                <input type="checkbox" name="base" value="${item.base.toLowerCase()}"> 
+                                ${item.base}
                             </label>
                         `;
                         baseNotesContainer.appendChild(checkbox); // Add the checkbox to the container
@@ -104,9 +107,9 @@
                     data.forEach(item => {
                         const checkbox = document.createElement('div'); // Create a new div for each checkbox
                         checkbox.innerHTML = `
-                            <label for="${item.middle_notes.toLowerCase()}">
-                                <input type="checkbox" name="middle_notes" value="${item.middle_notes.toLowerCase()}"> 
-                                ${item.middle_notes}
+                            <label for="${item.middle.toLowerCase()}">
+                                <input type="checkbox" name="middle" value="${item.middle.toLowerCase()}"> 
+                                ${item.middle}
                             </label>
                         `;
                         middleNotesContainer.appendChild(checkbox); // Add the checkbox to the container
@@ -116,11 +119,80 @@
         </script>
 
 
-        <!-- Filter by Rating -->
+        <div class="slider-container">
+            <label class="minPrice">Min price</label>
+            <div><input type="range" id="priceRange" min="0" max="30000" value="0" step="10">
+                <label class="value">ราคา: <span id="priceValue">500</span> บาท</label>
+            </div>
+        </div>
+
+        <script>
+            const priceRange = document.getElementById('priceRange');
+            const priceValue = document.getElementById('priceValue');
+
+            // ฟังก์ชันสำหรับอัปเดตราคา
+            const updatePrice = () => {
+                priceValue.textContent = priceRange.value;
+            };
+
+            // เพิ่ม event listener สำหรับการเปลี่ยนแปลงของสไลเดอร์
+            priceRange.addEventListener('input', updatePrice);
+
+            // ตั้งค่าเริ่มต้นให้แสดงราคา
+            updatePrice();
+        </script>
+
+        <div class="slider-container">
+            <label class="maxPrice">Max price</label>
+            <div><input type="range" id="max_priceRange" min="0" max="30000" value="500" step="10">
+                <label class="value">ราคา: <span id="max_priceValue">500</span> บาท</label>
+            </div>
+        </div>
+
+        <script>
+            const max_priceRange = document.getElementById('max_priceRange');
+            const max_priceValue = document.getElementById('max_priceValue');
+
+            // ฟังก์ชันสำหรับอัปเดตราคา
+            const max_updatePrice = () => {
+                max_priceValue.textContent = max_priceRange.value;
+            };
+
+            // เพิ่ม event listener สำหรับการเปลี่ยนแปลงของสไลเดอร์
+            max_priceRange.addEventListener('input', max_updatePrice);
+
+            // ตั้งค่าเริ่มต้นให้แสดงราคา
+            max_updatePrice();
+        </script>
+
+        <!-- Filter by Rating
         <div class="filter-group">
             <label>คะแนนผลิตภัณฑ์</label>
             <input type="radio" name="rating" value="4_up"> ★★★★ ขึ้นไป<br>
+        </div> -->
+
+        <div class="slider-container">
+            <label class="number">จำนวนสินค้าที่ต้องการแสดง</label>
+            <div><input type="range" id="numberRange" min="0" max="100" value="10" step="1">
+                <label class="value"> <span id="numberValue">10</span> </label>
+            </div>
         </div>
+
+        <script>
+            const numberRange = document.getElementById('numberRange');
+            const numberValue = document.getElementById('numberValue');
+
+            // ฟังก์ชันสำหรับอัปเดตราคา
+            const number_updatePrice = () => {
+                numberValue.textContent = numberRange.value;
+            };
+
+            // เพิ่ม event listener สำหรับการเปลี่ยนแปลงของสไลเดอร์
+            numberRange.addEventListener('input', number_updatePrice);
+
+            // ตั้งค่าเริ่มต้นให้แสดงราคา
+            number_updatePrice();
+        </script>
 
         <!-- Submit Button -->
         <button type="submit">ค้นหา</button>
@@ -143,30 +215,38 @@
 
             // Validate form inputs
             function validateForm() {
-                const department = document.getElementById('department').value;
+                const typ = document.getElementById('typ').value;
                 const scents = document.getElementById('scents').value;
-                const baseNotes = document.querySelectorAll('input[name="base_notes"]:checked');
-                const middleNotes = document.querySelectorAll('input[name="middle_notes"]:checked');
+                const baseNotes = document.querySelectorAll('input[name="base"]:checked');
+                const middleNotes = document.querySelectorAll('input[name="middle"]:checked');
+                const minPrice = Number(document.getElementById('priceRange').value);
+                const maxPrice = Number(document.getElementById('max_priceRange').value);
 
-                if (!department) {
+                if (!typ) {
                     alert('กรุณาเลือกเพศ'); // Please select gender
                     return false;
                 }
-
+            
                 if (!scents) {
                     alert('กรุณาเลือกกลิ่น (scents)'); // Please select scent
                     return false;
                 }
-
+            
                 if (baseNotes.length === 0) {
-                    alert('กรุณาเลือก base_notes'); // Please select base notes
+                    alert('กรุณาเลือก base'); // Please select base notes
                     return false;
                 }
-
+            
                 if (middleNotes.length === 0) {
-                    alert('กรุณาเลือก middle_notes'); // Please select middle notes
+                    alert('กรุณาเลือก middle'); // Please select middle notes
                     return false;
                 }
+            
+                if (minPrice > maxPrice) {
+                    alert(''); // Min price cannot exceed max price
+                    return false;
+                }
+            
 
                 return true; // All validations passed
             }
@@ -187,22 +267,25 @@
                         }
 
                     });
+                    data.min_price = Number(document.getElementById('priceRange').value);
+                    data.max_price = Number(document.getElementById('max_priceRange').value);
+                    data.top_n = Number(document.getElementById('numberRange').value);
 
-                    // Ensure base_notes is an array
-                    if (data.base_notes) {
-                        if (!Array.isArray(data.base_notes)) {
-                            data.base_notes = [data.base_notes];
+                    // Ensure base is an array
+                    if (data.base) {
+                        if (!Array.isArray(data.base)) {
+                            data.base = [data.base];
                         }
                     } else {
-                        data.base_notes = []; // Ensure it's an empty array if nothing is selected
+                        data.base = []; // Ensure it's an empty array if nothing is selected
                     }
 
-                    if (data.middle_notes) {
-                        if (!Array.isArray(data.middle_notes)) {
-                            data.middle_notes = [data.middle_notes];
+                    if (data.middle) {
+                        if (!Array.isArray(data.middle)) {
+                            data.middle = [data.middle];
                         }
                     } else {
-                        data.middle_notes = []; // Ensure it's an empty array if nothing is selected
+                        data.middle = []; // Ensure it's an empty array if nothing is selected
                     }
 
                     console.log('ข้อมูลที่ถูกส่ง:', data); // Log the data
@@ -225,7 +308,9 @@
 
                             // Check if data is an object
                             if (typeof data !== 'object' || data === null) {
-                                console.error('ข้อมูลที่ได้รับไม่ถูกต้อง:', data);
+                                //console.log('ข้อมูลที่ได้รับไม่ถูกต้อง:', data);
+                                //console.error('ข้อมูลที่ได้รับไม่ถูกต้อง:', data);
+                                alert(data);
                                 return;
                             }
 
@@ -241,7 +326,7 @@
                                 }
                             }
                             localStorage.setItem('formData', JSON.stringify(data));
-        
+
 
                             window.location.href = `result_page.html?${params.toString()}`; // Redirect to the new page
                         })
