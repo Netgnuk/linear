@@ -1,0 +1,48 @@
+
+/* style_result.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+    color: #343a40;
+}
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.product {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    background-color: #ffffff;
+    padding: 15px;
+    margin: 10px 0;
+    max-width: 30%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+.product:hover {
+    transform: scale(1.02); 
+    /* ให้ดูมีลูกเล่นตอนเม้าไปอยู๋ตรงสินค้า */
+}
+h2 {
+    margin: 0 0 10px 0;
+    color: #007bff;
+}
+p {
+    margin: 5px 0;
+    color: #495057;
+}
+strong {
+    color: #212529;
+}
+.no-results {
+    text-align: center;
+    color: #dc3545;
+    font-size: 1.2em;
+}

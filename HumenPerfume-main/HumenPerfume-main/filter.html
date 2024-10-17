@@ -1,4 +1,7 @@
 
+<!-- python -m http.server 8000
+ -->
+
 <!DOCTYPE html>
 <html lang="th">
 
@@ -43,13 +46,13 @@
 <body>
 
     <form class="filter-box" id="filterForm">
-        <h3>ตัวกรองสินค้า</h3>
+        <h3>Find your Perfume</h3>
 
         <!-- Filter by Gender -->
         <div class="filter-group">
-            <label for="typ">เพศ</label><br>
+            <label for="typ">Type</label><br>
             <select id="typ" name="typ">
-                <option value="">เลือกเพศ</option>
+                <option value="">เลือกtype</option>
                 <option value="Men">ชาย (Men)</option>
                 <option value="Women">หญิง (Women)</option>
                 <option value="Unisex">Unisex</option>
@@ -243,7 +246,7 @@
                 }
             
                 if (minPrice > maxPrice) {
-                    alert(''); // Min price cannot exceed max price
+                    alert('Incorrect price'); // Min price cannot exceed max price
                     return false;
                 }
             
@@ -347,3 +350,6 @@
 </body>
 
 </html>
+
+<!-- python -m http.server 8000
+ -->

@@ -1,22 +1,60 @@
+
+<!-- result_page -->
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ผลการค้นหา</title>
+    <title>ผลการค้นหา </title>
     <link rel="stylesheet" href="styles_result.css"> <!-- เชื่อมต่อไฟล์ CSS -->
 </head>
-<body>
+<body></body>
+    <header> 
+      <nav>
+        <div class="container">
+          <div class="nav-con">
+            <div class="logo">
+              <a href="result_page.html">Recommended Perfume</a>
+            </div>
+            <ul class="menu">
+              
+              <li><a href="index.html"> Home </a></li></ul>
+              <ul class="menu">
+              <li><a href="filter.html">Find your perfume</a></li></ul>
+              
+              <ul class="menu">
+              <li>
+                <div class="auth-box">
+                  <button class="nav-login-btn" id="heatmap-btn">Heatmap</button>
+
+                  
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav></header>
+      
     <h1>ผลการค้นหา</h1>
+    
+    <div class="product-container"></div>
     <script>
         const data = JSON.parse(localStorage.getItem('formData'));
-        console.log(data); // แสดงข้อมูลที่ได้รับ
+        const heatmapButton = document.getElementById('heatmap-btn');
+        //const productContainer = document.querySelector('.product-container');
 
+        console.log(data); // แสดงข้อมูลที่ได้รับ
+        console.log(data.length);
         // แสดงข้อมูลบนหน้า
         if (data && data.length > 0) {
+          
             data.forEach(item => {
-                document.body.innerHTML += `
+              
+                document.querySelector('.product-container').innerHTML += `
+                
                     <div class="product">
+                      <div class="p-container">
+                        <img src="${item.img_url}" class="product-image"></div>
                         <h2>${item.name}</h2>
                         <p><strong>แบรนด์:</strong> ${item.brand}</p>
                         <p><strong>ประเภท:</strong> ${item.department}</p>
@@ -30,6 +68,47 @@
         } else {
             document.body.innerHTML += `<p class="no-results">ไม่มีข้อมูลที่ตรงกับการค้นหา</p>`;
         }
+
+        heatmapButton.addEventListener('click', () => {
+          if (data && data.length > 0) {
+              let firstItem = data[0].department; // Use let instead of const
+              let imgUrl;
+      
+              // Check if all items have the same department
+              const allSame = data.every(item => item.department === firstItem);
+      
+              if (allSame) {
+                  // If all departments are the same, use that department
+                  firstItem = data[0].department;
+              } else {
+                  firstItem = "All"; // If they differ, set to "All"
+              }
+      
+              // Determine the image URL based on the department
+              switch (firstItem) {
+                  case "Men":
+                      imgUrl = 'Linear-Project-main/Linear-Project-main/img/Men_heatmap.png';
+                      break;
+                  case "Women":
+                      imgUrl = 'Linear-Project-main/Linear-Project-main/img/Women_heatmap.png';
+                      break;
+                  case "Unisex":
+                      imgUrl = 'Linear-Project-main/Linear-Project-main/img/Unisex_heatmap.png';
+                      break;
+                  default:
+                      imgUrl = 'Linear-Project-main/Linear-Project-main/img/All_heatmap.png';
+                      break;
+              }
+      
+             
+      
+               
+
+              window.open(imgUrl, '_blank');
+          }
+      });
     </script>
 </body>
 </html>
+
+

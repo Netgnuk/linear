@@ -4,7 +4,7 @@ import pandas as pd
 df = pd.read_csv('base.csv')
 
 # กรองเอาเฉพาะค่าตัวแรก
-first_items = df['base'].unique()  # แทนที่ 'Base Note' ด้วยชื่อคอลัมน์ที่คุณใช้
+first_items = df['base_notes'].unique()  # แทนที่ 'Base Note' ด้วยชื่อคอลัมน์ที่คุณใช้
 
 # สร้าง JSON
 json_data = [{'base': item} for item in first_items]

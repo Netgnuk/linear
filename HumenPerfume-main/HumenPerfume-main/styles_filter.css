@@ -17,12 +17,12 @@ body {
     padding: 30px;
     width: 400px;
     
-    transition: transform 0.3s;
+    /* transition: transform 0.3s; */
 }
 
-.filter-box:hover {
+/* .filter-box:hover {
     transform: scale(1.02);
-}
+} */
 
 .filter-box h3 {
     color: #8e44ad;
